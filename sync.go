@@ -20,6 +20,7 @@ import (
 
 const (
 	root_url         = "http://www.gunviolencearchive.org/reports/mass-shooting"
+	incident_url     = "http://www.gunviolencearchive.org/incident/"
 	PagesDir         = "./pages"
 	IncidentsDir     = "./incidents"
 	JsonIncidentsDir = "./incidents_json"
@@ -152,7 +153,6 @@ func main() {
 	fmt.Printf("year file parsed: %d\n", cptFile)
 	fmt.Printf("line parsed: %d\n", cptLine)
 	fmt.Printf("incident files parsed: %d\n", cptFileIncident)
-
 }
 
 func initFileName() {
@@ -281,7 +281,7 @@ func parseTBody(ch chan bool, tbody []byte) {
 
 			if _, err := os.Stat(fileName); os.IsNotExist(err) {
 				cptFileIncident++
-				urlInc := "http://www.gunviolencearchive.org/incident/" + id
+				urlInc := incident_url + id
 				response, err := http.Get(urlInc)
 				check(err)
 
