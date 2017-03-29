@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"golang.org/x/net/html"
 	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"golang.org/x/net/html"
 )
 
 const (
@@ -163,7 +164,6 @@ func parsePagesYears(allPages []rootPage) (incidentList []Incident) {
 	incidents := make(chan Incident)
 
 	for _, pageContent := range allPages {
-		//fmt.Printf("parsing page year \n")
 		go traverseIncidentLinks(pageContent.content, done, incidents)
 	}
 
@@ -222,20 +222,16 @@ func completeIncidentFiles(downloadedIncidents map[string]*DonwLoadedIncident) {
 }
 
 func buildGlobalJsonFile(downloadedIncidents map[string]*DonwLoadedIncident) {
-	//fmt.Printf("buildGlobalJsonFile... \n")
-	//fmt.Printf("total file... %d\n", len(downloadedIncidents))
 	defer traceTime("buildGlobalJsonFile")()
 
 	l := &IncidentList{}
 	for _, downloadIncident := range downloadedIncidents {
 		l.IncidentList = append(l.IncidentList, downloadIncident.incident)
 	}
-	//fmt.Printf("list length... %d\n", len(l.IncidentList))
 
 	incidentJson, _ := json.Marshal(l)
 
 	fileName := fmt.Sprintf("./%s/%s", "json", "incidents_all.json")
-	//fmt.Printf("json file name %s\n", fileName)
 
 	f, err := os.Create(fileName)
 	check(err)

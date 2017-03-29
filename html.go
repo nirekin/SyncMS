@@ -3,10 +3,11 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"golang.org/x/net/html"
 	"strconv"
 	"strings"
 	"time"
+
+	"golang.org/x/net/html"
 )
 
 func traverseLastPage(n *html.Node) int {
@@ -139,7 +140,6 @@ func traverseIncidentLinks(pqgeContent []byte, done chan bool, incidents chan In
 				inIncident = false
 				colCounter = 0
 				aCounter = 0
-				//fmt.Printf("incident parsed: %s\n", incident.IncidentId)
 				incident.ProcessDate = time.Now()
 				incidents <- incident
 			}
@@ -209,42 +209,3 @@ func readLocation(s []byte) []string {
 	}
 	return []string{"", ""}
 }
-
-/*
-func traverseTBody(n *html.Node) (*html.Node, error) {
-	if n.Type == html.ElementNode && n.Data == "tbody" {
-		return n, nil
-	}
-
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		id, err := traverseTBody(c)
-		if err == nil {
-			return id, nil
-		}
-	}
-	return nil, errors.New("tbody not found")
-}
-*/
-/*
-func traverseIncidentLinks(node *html.Node, done chan bool, ids chan string, isRoot bool) {
-	for c := node.FirstChild; c != nil; c = c.NextSibling {
-
-		if c.Type == html.ElementNode && c.Data == "a" {
-			attrs := c.Attr
-			for _, v := range attrs {
-				if v.Key == "href" && strings.HasPrefix(v.Val, "/incident") {
-					// the val content looks like  /incident/744799 and we just want the id
-					arr := strings.Split(v.Val, "/")
-					ids <- arr[len(arr)-1]
-					break
-				}
-			}
-		} else {
-			traverseIncidentLinks(c, done, ids, false)
-		}
-	}
-	if isRoot {
-		done <- true
-	}
-}
-*/
