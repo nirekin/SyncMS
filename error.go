@@ -8,7 +8,7 @@ type Error interface {
 
 func check(e error) {
 	if e != nil {
-		TraceActivity.Printf("check error : --%s--\n", e.Error())
+		TraceActivity.Printf("Error : --%s--\n", e.Error())
 		panic(e)
 	}
 }
